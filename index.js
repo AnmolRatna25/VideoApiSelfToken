@@ -33,12 +33,16 @@ app.get('/', async (req, res) => {
 
     const response = await axios.post(requrl, body, { headers });
 
-    if (response.status !=200) {
+    if (response.status !== 200) {
+      console.error("Error in first request:", response.statusText);
       return res.status(response.status).send(response.data);
     }
 
-    const jsonrt = response.json();
-    const newUrl2 = `https://${newUrl1.split("/")[2]}/${newUrl12}/master.m3u8` + jsonrt.data;
+    // Extract the necessary data from the response
+    const { data } = response.data;
+
+    // Construct the second URL
+    const newUrl2 = `https://${newUrl1.split("/")[2]}/${newUrl12}/master.m3u8` + data;
 
     const Vdokey = newUrl2.split("/")[3];
     const Policy0 = newUrl2.split("/")[4];
@@ -46,9 +50,11 @@ app.get('/', async (req, res) => {
 
     const response2 = await axios.get(newUrl2);
 
-    if (!response2.data.ok) {
-      return res.status(response2.status).send("unable to get m3u8 = " + newUrl2);
+    if (response2.status !== 200) {
+      console.error("Error in second request:", response2.statusText);
+      return res.status(response2.status).send(response2.data);
     }
+
 
     let m3u8Content = response2.data;
 
