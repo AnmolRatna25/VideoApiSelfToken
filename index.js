@@ -33,10 +33,12 @@ app.get('/', async (req, res) => {
 
     const response = await axios.post(requrl, body, { headers });
 
-    // if (response.status == !200) {
-    //   return res.status(response.status).send(response.data);
-    // }
-    const newUrl2 = `https://${newUrl1.split("/")[2]}/${newUrl12}/master.m3u8` + response.data.data;
+    if (response.status !=200) {
+      return res.status(response.status).send(response.data);
+    }
+
+    const jsonrt = response.json();
+    const newUrl2 = `https://${newUrl1.split("/")[2]}/${newUrl12}/master.m3u8` + jsonrt.data;
 
     const Vdokey = newUrl2.split("/")[3];
     const Policy0 = newUrl2.split("/")[4];
