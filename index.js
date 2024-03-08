@@ -5,7 +5,7 @@ const app = express();
 
 app.use(express.json());
 
-app.post('/', async (req, res) => {
+app.get('/', async (req, res) => {
   try {
     const url = new URL(req.url, `https://${req.headers.host}`);
     const vurlParam = url.searchParams.get("Vurl");
