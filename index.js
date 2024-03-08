@@ -33,7 +33,7 @@ app.get('/', async (req, res) => {
 
     const response = await axios.post(requrl, body, { headers });
 
-    if (!response.data.ok) {
+    if (response.status!=200) {
       return res.status(response.status).send(response.data);
     }
     const newUrl2 = `https://${newUrl1.split("/")[2]}/${newUrl12}/master.m3u8` + response.data.data;
